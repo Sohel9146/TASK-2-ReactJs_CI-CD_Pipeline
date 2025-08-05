@@ -31,9 +31,23 @@ pipeline {
         stage('Run Docker Container') {
             steps {
                 script {
-                    dockerImage.run("-d -p 8082:80")
-                }
-            }
+                    sh '''
+                        # Find the container using port 8082
+                        CONTAINER_ID=$(docker ps -q --filter "publish=8082")
+
+                        # Stop and remove the container if found
+                        if [ ! -z "$CONTAINER_ID" ]; then
+                            echo "Stopping container using port 8082: $CONTAINER_ID"
+                            docker stop $CONTAINER_ID
+                            docker rm $CONTAINER_ID
+                        fi
+
+                        # Run new container
+                        docker run -d --name react-container -p 8082:80 react-app-image
+                        '''
         }
+    }
+}
+
     }
 }
