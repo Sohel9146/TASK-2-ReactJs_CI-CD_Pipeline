@@ -76,8 +76,9 @@ docker run -d -p 80:80 react-jenkins-app
 http://localhost
 ```
 
-🖼️ **[Screenshot: React App Running on Browser](screenshots/react-browser.png)**  
-🖼️ **[Screenshot: Docker Container Running](https://github.com/Sohel9146/TASK-2-ReactJs_CI-CD_Pipeline/blob/main/screenshots/Docker%20Container%20Running.png?raw=true)**
+🖼️ **[Screenshot: React App Running on Browser](screenshots/React App Running on Browser.png)**  
+🖼️   ![Screenshot: Docker Container Running](https://github.com/Sohel9146/TASK-2-ReactJs_CI-CD_Pipeline/blob/main/screenshots/Docker%20Container%20Running.png?raw=true)
+
 
 ---
 
