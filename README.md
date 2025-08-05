@@ -1,70 +1,137 @@
-# Getting Started with Create React App
+# 🚀 DevOps Task 2: Jenkins CI/CD Pipeline for React.js App
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+This project demonstrates a complete CI/CD pipeline setup using **Jenkins**, **Docker**, and **GitHub Webhooks** to automate the build and deployment of a React.js application.
 
-## Available Scripts
+---
 
-In the project directory, you can run:
+## 📌 Objective
 
-### `npm start`
+- Set up Jenkins to automatically build and deploy a React.js app on each code commit.
+- Use a `Jenkinsfile` to define pipeline stages: clone, install, build, dockerize, and deploy.
+- Integrate **GitHub webhook** to auto-trigger the pipeline.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+---
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+## 🧰 Tools Used
 
-### `npm test`
+- ✅ React.js (Frontend)
+- ✅ Jenkins (Automation)
+- ✅ Docker (Containerization)
+- ✅ GitHub (Source code + Webhook)
+- ✅ Nginx (Production server for React)
+- ✅ ngrok (To expose local Jenkins for webhook)
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+---
 
-### `npm run build`
+## 🧪 Pipeline Stages (Defined in `Jenkinsfile`)
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+| Stage | Description |
+|-------|-------------|
+| **Clone** | Clone code from GitHub |
+| **Install** | Run `npm install` to get dependencies |
+| **Build** | Run `npm run build` to generate production files |
+| **Docker Build** | Build Docker image using multistage Dockerfile |
+| **Docker Run** | Deploy app inside container using Nginx |
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+🖼️ **[Screenshot: Jenkins Stage Output](screenshots/console-output.png)**
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+---
 
-### `npm run eject`
+## 🐳 Dockerfile Overview
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+A multistage `Dockerfile` is used:
+- **Stage 1 (Builder)**: Uses Node.js to install and build the React app.
+- **Stage 2 (Nginx)**: Copies the build output and serves it with Nginx.
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+> See `Dockerfile` in this repo for full content.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+---
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+## 🔁 Webhook Integration
 
-## Learn More
+- Configured GitHub Webhook to call:
+  ```
+  http://<ngrok-public-url>/github-webhook/
+  ```
+- Jenkins is configured with:
+  - ✅ “GitHub hook trigger for GITScm polling”
+- On every code commit to the GitHub repo, the pipeline is triggered automatically.
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+🖼️ **[Screenshot: GitHub Webhook Setup](screenshots/webhook-setup.png)**  
+🖼️ **[Screenshot: GitHub Commit Triggering Build](screenshots/github-commit.png)**  
+🖼️ **[Screenshot: ngrok Terminal with Public URL](screenshots/ngrok-terminal.png)**
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+---
 
-### Code Splitting
+## 🚀 How to Run Locally (Manual Docker Run)
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+```bash
+# Build Docker Image
+docker build -t react-jenkins-app .
 
-### Analyzing the Bundle Size
+# Run the container
+docker run -d -p 80:80 react-jenkins-app
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+# Open in browser
+http://localhost
+```
 
-### Making a Progressive Web App
+🖼️ **[Screenshot: React App Running on Browser](screenshots/react-browser.png)**  
+🖼️ **[Screenshot: Docker Container Running](screenshots/docker-ps.png)**
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+---
 
-### Advanced Configuration
+## 🖼️ Screenshot Index
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+| Screenshot | Description |
+|------------|-------------|
+| **jenkins-dashboard.png** | Jenkins UI showing pipeline project |
+| **console-output.png** | Console log of successful build |
+| **webhook-setup.png** | GitHub webhook configuration |
+| **github-commit.png** | GitHub commit history triggering pipeline |
+| **ngrok-terminal.png** | Terminal showing ngrok public URL |
+| **react-browser.png** | React app running in browser |
+| **docker-ps.png** | Docker container running with app |
 
-### Deployment
+---
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+## 📁 Folder Structure
 
-### `npm run build` fails to minify
+```
+├── Dockerfile
+├── Jenkinsfile
+├── README.md
+├── package.json
+├── public/
+├── src/
+├── screenshots/
+│   ├── jenkins-dashboard.png
+│   ├── console-output.png
+│   ├── webhook-setup.png
+│   ├── github-commit.png
+│   ├── ngrok-terminal.png
+│   ├── react-browser.png
+│   └── docker-ps.png
+```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+---
+
+## 📤 Submission
+
+This repo was submitted as part of **Task 2 – DevOps Internship**.  
+GitHub Webhooks and CI/CD automation using Jenkins are fully implemented and verified.
+
+---
+
+## 🙋 Interview Questions Covered
+
+1. What is Jenkins and why is it used in DevOps?
+2. How does a Jenkinsfile work?
+3. What is the purpose of multistage Docker builds?
+4. How do GitHub webhooks integrate with Jenkins?
+5. What happens in each stage of a typical CI/CD pipeline?
+
+---
+
+> 👨‍💻 Maintained by: [Your Name]  
+> 🔗 GitHub: [https://github.com/your-username/your-repo-name](https://github.com/your-username/your-repo-name)
