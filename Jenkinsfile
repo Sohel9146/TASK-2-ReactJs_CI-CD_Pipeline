@@ -4,7 +4,7 @@ pipeline {
     stages {
         stage('Clone Code From Github') {
             steps {
-                git 'https://github.com/Sohel9146/TASK-2-ReactJs_CI-CD_Pipeline.git'
+                git url: 'https://github.com/Sohel9146/TASK-2-ReactJs_CI-CD_Pipeline.git', branch: 'main'
             }
         }
 
